@@ -93,7 +93,7 @@ func (c *highLevelClient) CreateConnector(req CreateConnectorRequest, sync bool)
 				resp, err := c.GetConnector(req.ConnectorRequest)
 				return err == nil && resp.Code == 200
 			},
-			2*time.Minute,
+			5*time.Minute,
 		) {
 			return result, errors.New("timeout on creating connector sync")
 		}
@@ -115,7 +115,7 @@ func (c *highLevelClient) UpdateConnector(req CreateConnectorRequest, sync bool)
 				upToDate, err := c.IsUpToDate(req.Name, req.Config)
 				return err == nil && upToDate
 			},
-			2*time.Minute,
+			5*time.Minute,
 		) {
 			return result, errors.New("timeout on creating connector sync")
 		}
@@ -137,7 +137,7 @@ func (c *highLevelClient) DeleteConnector(req ConnectorRequest, sync bool) (Empt
 				r, e := c.GetConnector(req)
 				return e == nil && r.Code == 404
 			},
-			2*time.Minute,
+			5*time.Minute,
 		) {
 			return result, errors.New("timeout on deleting connector sync")
 		}
@@ -175,7 +175,7 @@ func (c *highLevelClient) PauseConnector(req ConnectorRequest, sync bool) (Empty
 				resp, err := c.GetConnectorStatus(req)
 				return err == nil && resp.Code == 200 && resp.ConnectorStatus["state"] == "PAUSED"
 			},
-			2*time.Minute,
+			5*time.Minute,
 		) {
 			return result, errors.New("timeout on pausing connector sync")
 		}
@@ -197,7 +197,7 @@ func (c *highLevelClient) ResumeConnector(req ConnectorRequest, sync bool) (Empt
 				resp, err := c.GetConnectorStatus(req)
 				return err == nil && resp.Code == 200 && resp.ConnectorStatus["state"] == "RUNNING"
 			},
-			2*time.Minute,
+			5*time.Minute,
 		) {
 			return result, errors.New("timeout on resuming connector sync")
 		}
